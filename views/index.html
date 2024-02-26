@@ -1,0 +1,53 @@
+<!-- This is a static file -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>file-metadata-microservice-app</title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+  <div>
+    <form class="register-form" enctype="multipart/form-data" method="post" name="uploadFile" action="/get-file-size">
+      <input type="file" value="Upload" name="uploadedFile" >
+      <p class="message">Click on Choose File and select a file from your system</p>
+      <button>Submit</button>
+    </form>
+      <div id="output"></div>
+</div>
+    <script>
+    var form = document.forms.namedItem("uploadFile");
+form.addEventListener('submit', function(ev) {
+
+  var
+    oOutput = document.getElementById("output"),
+    oData = new FormData(document.forms.namedItem("uploadFile"));  
+  //accesing the values
+  //file = form.elements["uploadedFile"].value;
+  //console.log(file);
+  /*for (var value of oData.values()) {
+   console.log(value.size); 
+}*/
+  //http request
+  var oReq = new XMLHttpRequest();
+  oReq.open("POST", "/get-file-size", true);
+  oReq.onload = function(oEvent) {
+    if (oReq.status == 200) {
+      oOutput.innerHTML = "Uploaded!";
+    } else {
+      oOutput.innerHTML = "Error " + oReq.status + " occurred uploading your file.<br \/>";
+    }
+  };
+  oReq.send(oData);
+  //ev.preventDefault();
+}, false);
+      
+    </script>
+  </body>
+</html>
